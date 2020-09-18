@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Nyous.Contexts;
 using Nyous.Domains;
+using Nyous.Utils;
 
 namespace Nyous.Controllers
 {
@@ -33,6 +34,7 @@ namespace Nyous.Controllers
 
         private Usuario AuthenticateUser(Usuario login)
         {
+            login.Senha = Crypto.Criptografar(login.Senha, login.Email.Substring(0, 4));
             return _context.Usuario.Include(a => a.IdAcessoNavigation).FirstOrDefault(u => u.Email == login.Email && u.Senha == login.Senha);
         }
 
